@@ -13,6 +13,7 @@ import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
 import { Route as ClientesNovoRouteImport } from './routes/clientes.novo'
+import { Route as ClientesIdEditarRouteImport } from './routes/clientes.$id.editar'
 
 const ClientesRoute = ClientesRouteImport.update({
   id: '/clientes',
@@ -34,17 +35,24 @@ const ClientesNovoRoute = ClientesNovoRouteImport.update({
   path: '/novo',
   getParentRoute: () => ClientesRoute,
 } as any)
+const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
+  id: '/$id/editar',
+  path: '/$id/editar',
+  getParentRoute: () => ClientesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes/': typeof ClientesIndexRoute
+  '/clientes/$id/editar': typeof ClientesIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes': typeof ClientesIndexRoute
+  '/clientes/$id/editar': typeof ClientesIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -52,13 +60,25 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes/': typeof ClientesIndexRoute
+  '/clientes/$id/editar': typeof ClientesIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/clientes' | '/clientes/novo' | '/clientes/'
+  fullPaths:
+    | '/'
+    | '/clientes'
+    | '/clientes/novo'
+    | '/clientes/'
+    | '/clientes/$id/editar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/clientes/novo' | '/clientes'
-  id: '__root__' | '/' | '/clientes' | '/clientes/novo' | '/clientes/'
+  to: '/' | '/clientes/novo' | '/clientes' | '/clientes/$id/editar'
+  id:
+    | '__root__'
+    | '/'
+    | '/clientes'
+    | '/clientes/novo'
+    | '/clientes/'
+    | '/clientes/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,17 +116,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesNovoRouteImport
       parentRoute: typeof ClientesRoute
     }
+    '/clientes/$id/editar': {
+      id: '/clientes/$id/editar'
+      path: '/$id/editar'
+      fullPath: '/clientes/$id/editar'
+      preLoaderRoute: typeof ClientesIdEditarRouteImport
+      parentRoute: typeof ClientesRoute
+    }
   }
 }
 
 interface ClientesRouteChildren {
   ClientesNovoRoute: typeof ClientesNovoRoute
   ClientesIndexRoute: typeof ClientesIndexRoute
+  ClientesIdEditarRoute: typeof ClientesIdEditarRoute
 }
 
 const ClientesRouteChildren: ClientesRouteChildren = {
   ClientesNovoRoute: ClientesNovoRoute,
   ClientesIndexRoute: ClientesIndexRoute,
+  ClientesIdEditarRoute: ClientesIdEditarRoute,
 }
 
 const ClientesRouteWithChildren = ClientesRoute._addFileChildren(
