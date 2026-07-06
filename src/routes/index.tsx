@@ -137,32 +137,37 @@ function QuickTile({ tile }: { tile: Tile }) {
 
 function DashboardPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <PageHeader
         title="Painel Principal"
         description="Acesso rápido e visão geral do desempenho comercial deste mês."
         breadcrumbs={[{ label: "Início", to: "/" }, { label: "Painel Principal" }]}
       />
 
-      <div className="space-y-6">
-        {GROUPS.map((group) => (
-          <section key={group.label}>
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              {group.label}
-            </h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-              {group.items.map((tile) => (
-                <QuickTile key={tile.title} tile={tile} />
-              ))}
-            </div>
-          </section>
-        ))}
+      <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+        <div className="space-y-6">
+          {GROUPS.map((group) => (
+            <section key={group.label}>
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                {group.label}
+              </h2>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                {group.items.map((tile) => (
+                  <QuickTile key={tile.title} tile={tile} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
 
-      <section className="space-y-4">
+      <div className="h-6" />
+
+      <section className="space-y-4 rounded-xl border border-border/60 bg-muted/40 p-6">
         <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Visão geral do mês
         </h2>
+
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {STATS.map((s) => (
