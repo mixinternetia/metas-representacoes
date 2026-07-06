@@ -9,7 +9,7 @@ import { AppHeader } from "./app-header";
 export function AppShell({ children }: { children?: ReactNode }) {
   return (
     <TooltipProvider delayDuration={200}>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={false}>
         <AppSidebar />
         <SidebarInset className="min-w-0">
           <AppHeader />
