@@ -1,8 +1,30 @@
-export type ClienteSituacao = "ativo" | "inativo";
+export type Situacao = "ativo" | "inativo";
+export type ClienteSituacao = Situacao;
+
+export const TIPOS_CONTATO = [
+  "Celular",
+  "E-mail",
+  "Skype",
+  "Facebook",
+  "Instagram",
+  "Telefone Fixo",
+  "X",
+] as const;
+export type TipoContato = (typeof TIPOS_CONTATO)[number];
+
+export const OPERADORAS = ["Vivo", "Claro", "TIM", "Oi", "Algar", "Outra"] as const;
+
+export const TIPOS_ENDERECO = [
+  "Entrega de mercadoria",
+  "Contato",
+  "Correspondência financeira",
+  "Outros",
+] as const;
+export type TipoEndereco = (typeof TIPOS_ENDERECO)[number];
 
 export interface Endereco {
   id: string;
-  tipo: "Comercial" | "Cobrança" | "Entrega" | "Residencial";
+  tipo: TipoEndereco;
   cep: string;
   logradouro: string;
   numero: string;
@@ -10,40 +32,38 @@ export interface Endereco {
   bairro: string;
   cidade: string;
   uf: string;
-  principal?: boolean;
 }
 
 export interface Contato {
   id: string;
   nome: string;
-  cargo: string;
-  email: string;
-  telefone: string;
-  celular?: string;
+  setor: string;
+  tipo: TipoContato;
+  descricao: string;
+  operadora?: string;
 }
 
 export interface Socio {
   id: string;
   nome: string;
   cpf: string;
+  dataNascimento: string;
   participacao: number;
-  cargo: string;
 }
 
 export interface ReferenciaComercial {
   id: string;
-  empresa: string;
-  contato: string;
+  nome: string;
   telefone: string;
-  observacoes?: string;
+  situacao: Situacao;
 }
 
 export interface DadosBancarios {
   banco: string;
   agencia: string;
   conta: string;
-  tipo: "Corrente" | "Poupança";
-  pix?: string;
+  correntista: string;
+  telefoneCorrentista: string;
 }
 
 export interface Cliente {
@@ -55,17 +75,15 @@ export interface Cliente {
   ie: string;
   im?: string;
   email: string;
-  emailNF?: string;
+  emailDanfe?: string;
+  emailCopia?: string;
   telefone: string;
   celular?: string;
   vendedor: string;
-  situacao: ClienteSituacao;
+  situacao: Situacao;
   cidade: string;
   uf: string;
   observacoes?: string;
-  limiteCredito: number;
-  prazoPagamento: string;
-  condicaoPagamento: string;
   dadosBancarios: DadosBancarios;
   enderecos: Endereco[];
   contatos: Contato[];
@@ -73,16 +91,24 @@ export interface Cliente {
   referencias: ReferenciaComercial[];
   criadoEm: string;
   atualizadoEm: string;
+  volumeVendas: number;
 }
 
-const VENDEDORES = [
-  "Carlos Andrade",
-  "Marina Souza",
-  "Ricardo Lima",
-  "Patrícia Mendes",
-  "João Pereira",
-  "Fernanda Castro",
+export interface Vendedor {
+  codigo: string;
+  nome: string;
+}
+
+export const VENDEDORES: Vendedor[] = [
+  { codigo: "V001", nome: "Carlos Andrade" },
+  { codigo: "V002", nome: "Marina Souza" },
+  { codigo: "V003", nome: "Ricardo Lima" },
+  { codigo: "V004", nome: "Patrícia Mendes" },
+  { codigo: "V005", nome: "João Pereira" },
+  { codigo: "V006", nome: "Fernanda Castro" },
 ];
+
+export const VENDEDORES_LIST = VENDEDORES.map((v) => v.nome);
 
 const CIDADES: Array<[string, string]> = [
   ["São Paulo", "SP"],
@@ -101,7 +127,7 @@ const CIDADES: Array<[string, string]> = [
   ["Salvador", "BA"],
   ["Recife", "PE"],
   ["Fortaleza", "CE"],
-  ["Brasília", "DF"],
+  ["Natal", "RN"],
   ["Goiânia", "GO"],
   ["Manaus", "AM"],
   ["Vitória", "ES"],
@@ -151,25 +177,30 @@ const FANTASIAS = [
   "Bom Jardim", "Boa Vista",
 ];
 
-function pseudoCNPJ(i: number) {
+export function pseudoCNPJ(i: number) {
   const base = (10000000000000 + i * 137311).toString().padStart(14, "0").slice(0, 14);
   return `${base.slice(0, 2)}.${base.slice(2, 5)}.${base.slice(5, 8)}/${base.slice(8, 12)}-${base.slice(12)}`;
 }
-function pseudoTel(i: number) {
+export function pseudoTel(i: number) {
   const ddd = 11 + (i % 80);
   const n = (90000000 + i * 1234).toString().slice(0, 8);
   return `(${ddd}) 9${n.slice(0, 4)}-${n.slice(4)}`;
 }
-function pseudoCEP(i: number) {
+export function pseudoCEP(i: number) {
   const n = (1000000 + i * 9173).toString().slice(0, 8).padStart(8, "0");
   return `${n.slice(0, 5)}-${n.slice(5, 8)}`;
+}
+export function pseudoCPF(i: number) {
+  const d = (10000000000 + i * 7654321).toString().slice(0, 11);
+  return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`;
 }
 
 export const MOCK_CLIENTES: Cliente[] = Array.from({ length: 30 }, (_, i) => {
   const [cidade, uf] = CIDADES[i % CIDADES.length];
-  const situacao: ClienteSituacao = i % 7 === 0 ? "inativo" : "ativo";
+  const situacao: Situacao = i % 7 === 0 ? "inativo" : "ativo";
   const criado = new Date(2023, (i * 2) % 12, ((i * 5) % 27) + 1);
   const atualizado = new Date(2025, (i * 3) % 12, ((i * 7) % 27) + 1);
+  const slug = FANTASIAS[i].toLowerCase().replace(/[^a-z]/g, "");
   return {
     id: `c${i + 1}`,
     codigo: String(1001 + i),
@@ -177,42 +208,40 @@ export const MOCK_CLIENTES: Cliente[] = Array.from({ length: 30 }, (_, i) => {
     nomeFantasia: FANTASIAS[i],
     cnpj: pseudoCNPJ(i + 1),
     ie: String(100000000 + i * 9871).slice(0, 12),
-    im: i % 3 === 0 ? String(10000 + i) : undefined,
-    email: `contato@${FANTASIAS[i].toLowerCase().replace(/[^a-z]/g, "")}.com.br`,
-    emailNF: `nf@${FANTASIAS[i].toLowerCase().replace(/[^a-z]/g, "")}.com.br`,
+    im: i % 3 === 0 ? String(10000 + i) : "",
+    email: `contato@${slug}.com.br`,
+    emailDanfe: `danfe@${slug}.com.br`,
+    emailCopia: i % 2 === 0 ? `copia@${slug}.com.br` : "",
     telefone: pseudoTel(i),
     celular: pseudoTel(i + 50),
-    vendedor: VENDEDORES[i % VENDEDORES.length],
+    vendedor: VENDEDORES[i % VENDEDORES.length].nome,
     situacao,
     cidade,
     uf,
-    observacoes: i % 4 === 0 ? "Cliente preferencial — atenção especial em prazos." : undefined,
-    limiteCredito: 25000 + (i % 10) * 7500,
-    prazoPagamento: ["30 dias", "30/60", "30/60/90", "À vista", "28 DDL"][i % 5],
-    condicaoPagamento: ["Boleto", "Boleto", "PIX", "Depósito", "Cartão"][i % 5],
+    observacoes: i % 4 === 0 ? "Cliente preferencial — atenção especial em prazos." : "",
+    volumeVendas: 45000 + ((i * 8123) % 320000),
     dadosBancarios: {
       banco: ["Banco do Brasil", "Itaú", "Bradesco", "Santander", "Sicredi"][i % 5],
       agencia: String(1000 + i).padStart(4, "0"),
       conta: `${10000 + i * 73}-${i % 10}`,
-      tipo: i % 2 === 0 ? "Corrente" : "Poupança",
-      pix: `${pseudoCNPJ(i + 1)}`,
+      correntista: RAZOES[i],
+      telefoneCorrentista: pseudoTel(i + 700),
     },
     enderecos: [
       {
         id: "e1",
-        tipo: "Comercial",
+        tipo: "Entrega de mercadoria",
         cep: pseudoCEP(i),
-        logradouro: `Av. Brasil`,
+        logradouro: "Av. Brasil",
         numero: String(100 + i * 13),
-        complemento: i % 2 === 0 ? "Sala 1201" : undefined,
+        complemento: i % 2 === 0 ? "Sala 1201" : "",
         bairro: "Centro",
         cidade,
         uf,
-        principal: true,
       },
       {
         id: "e2",
-        tipo: "Entrega",
+        tipo: "Correspondência financeira",
         cep: pseudoCEP(i + 7),
         logradouro: "Rod. Anhanguera, km",
         numero: String(20 + (i % 60)),
@@ -225,57 +254,43 @@ export const MOCK_CLIENTES: Cliente[] = Array.from({ length: 30 }, (_, i) => {
       {
         id: "ct1",
         nome: ["Ana Lima", "Bruno Costa", "Carlos Reis", "Diana Souza", "Eduardo Pinto"][i % 5],
-        cargo: "Compras",
-        email: `compras${i}@empresa.com.br`,
-        telefone: pseudoTel(i + 100),
-        celular: pseudoTel(i + 200),
+        setor: "Compras",
+        tipo: "Celular" as TipoContato,
+        descricao: pseudoTel(i + 100),
+        operadora: ["Vivo", "Claro", "TIM"][i % 3],
       },
       {
         id: "ct2",
         nome: ["Felipe Alves", "Giovana Tavares", "Heitor Nunes", "Isabela Rocha"][i % 4],
-        cargo: "Financeiro",
-        email: `financeiro${i}@empresa.com.br`,
-        telefone: pseudoTel(i + 300),
+        setor: "Financeiro",
+        tipo: "E-mail" as TipoContato,
+        descricao: `financeiro@${slug}.com.br`,
       },
     ],
     socios: [
       {
         id: "s1",
         nome: ["Roberto Almeida", "Sandra Vieira", "Tiago Moraes"][i % 3],
-        cpf: `${(100 + i).toString().padStart(3, "0")}.${(200 + i).toString().padStart(3, "0")}.${(300 + i).toString().padStart(3, "0")}-${(10 + (i % 89)).toString().padStart(2, "0")}`,
+        cpf: pseudoCPF(i + 1),
+        dataNascimento: `19${60 + (i % 30)}-0${(i % 9) + 1}-1${i % 9}`,
         participacao: 60,
-        cargo: "Sócio Administrador",
       },
       {
         id: "s2",
-        nome: ["Vera Lúcia", "Marcos Paulo", "Renata Dias"][i % 3],
-        cpf: `${(400 + i).toString().padStart(3, "0")}.${(500 + i).toString().padStart(3, "0")}.${(600 + i).toString().padStart(3, "0")}-${(20 + (i % 79)).toString().padStart(2, "0")}`,
+        nome: ["Vera Lúcia Ramos", "Marcos Paulo Dias", "Renata Dias"][i % 3],
+        cpf: pseudoCPF(i + 40),
+        dataNascimento: `19${55 + (i % 30)}-0${(i % 9) + 1}-2${i % 8}`,
         participacao: 40,
-        cargo: "Sócio",
       },
     ],
-    referencias: [
-      {
-        id: "r1",
-        empresa: "Fornecedor Plus Ltda",
-        contato: "Marcelo Aguiar",
-        telefone: pseudoTel(i + 500),
-        observacoes: "Relacionamento há mais de 5 anos.",
-      },
-      {
-        id: "r2",
-        empresa: "Distribuidora Nacional S/A",
-        contato: "Joana Prado",
-        telefone: pseudoTel(i + 600),
-      },
-    ],
+    referencias: [],
     criadoEm: criado.toISOString(),
     atualizadoEm: atualizado.toISOString(),
-  };
+  } satisfies Cliente;
 });
 
 export const UFS = [
   "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"
 ];
 
-export const VENDEDORES_LIST = VENDEDORES;
+export const CIDADES_LIST = Array.from(new Set(CIDADES.map(([c]) => c))).sort();
