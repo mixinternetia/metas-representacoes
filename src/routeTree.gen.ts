@@ -13,7 +13,7 @@ import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
 import { Route as ClientesNovoRouteImport } from './routes/clientes.novo'
-import { Route as ClientesIdVisualizarRouteImport } from './routes/clientes.$id.visualizar'
+import { Route as ClientesIdIndexRouteImport } from './routes/clientes.$id.index'
 import { Route as ClientesIdEditarRouteImport } from './routes/clientes.$id.editar'
 
 const ClientesRoute = ClientesRouteImport.update({
@@ -36,9 +36,9 @@ const ClientesNovoRoute = ClientesNovoRouteImport.update({
   path: '/novo',
   getParentRoute: () => ClientesRoute,
 } as any)
-const ClientesIdVisualizarRoute = ClientesIdVisualizarRouteImport.update({
-  id: '/$id/visualizar',
-  path: '/$id/visualizar',
+const ClientesIdIndexRoute = ClientesIdIndexRouteImport.update({
+  id: '/$id/',
+  path: '/$id/',
   getParentRoute: () => ClientesRoute,
 } as any)
 const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
@@ -53,14 +53,14 @@ export interface FileRoutesByFullPath {
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes/': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
-  '/clientes/$id/visualizar': typeof ClientesIdVisualizarRoute
+  '/clientes/$id/': typeof ClientesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
-  '/clientes/$id/visualizar': typeof ClientesIdVisualizarRoute
+  '/clientes/$id': typeof ClientesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,7 +69,7 @@ export interface FileRoutesById {
   '/clientes/novo': typeof ClientesNovoRoute
   '/clientes/': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
-  '/clientes/$id/visualizar': typeof ClientesIdVisualizarRoute
+  '/clientes/$id/': typeof ClientesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,14 +79,14 @@ export interface FileRouteTypes {
     | '/clientes/novo'
     | '/clientes/'
     | '/clientes/$id/editar'
-    | '/clientes/$id/visualizar'
+    | '/clientes/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/clientes/novo'
     | '/clientes'
     | '/clientes/$id/editar'
-    | '/clientes/$id/visualizar'
+    | '/clientes/$id'
   id:
     | '__root__'
     | '/'
@@ -94,7 +94,7 @@ export interface FileRouteTypes {
     | '/clientes/novo'
     | '/clientes/'
     | '/clientes/$id/editar'
-    | '/clientes/$id/visualizar'
+    | '/clientes/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,11 +132,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesNovoRouteImport
       parentRoute: typeof ClientesRoute
     }
-    '/clientes/$id/visualizar': {
-      id: '/clientes/$id/visualizar'
-      path: '/$id/visualizar'
-      fullPath: '/clientes/$id/visualizar'
-      preLoaderRoute: typeof ClientesIdVisualizarRouteImport
+    '/clientes/$id/': {
+      id: '/clientes/$id/'
+      path: '/$id'
+      fullPath: '/clientes/$id/'
+      preLoaderRoute: typeof ClientesIdIndexRouteImport
       parentRoute: typeof ClientesRoute
     }
     '/clientes/$id/editar': {
@@ -153,14 +153,14 @@ interface ClientesRouteChildren {
   ClientesNovoRoute: typeof ClientesNovoRoute
   ClientesIndexRoute: typeof ClientesIndexRoute
   ClientesIdEditarRoute: typeof ClientesIdEditarRoute
-  ClientesIdVisualizarRoute: typeof ClientesIdVisualizarRoute
+  ClientesIdIndexRoute: typeof ClientesIdIndexRoute
 }
 
 const ClientesRouteChildren: ClientesRouteChildren = {
   ClientesNovoRoute: ClientesNovoRoute,
   ClientesIndexRoute: ClientesIndexRoute,
   ClientesIdEditarRoute: ClientesIdEditarRoute,
-  ClientesIdVisualizarRoute: ClientesIdVisualizarRoute,
+  ClientesIdIndexRoute: ClientesIdIndexRoute,
 }
 
 const ClientesRouteWithChildren = ClientesRoute._addFileChildren(

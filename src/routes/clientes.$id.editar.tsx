@@ -1,26 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ClienteForm } from "@/components/clientes/cliente-form";
-import { MOCK_CLIENTES } from "@/data/mock-clientes";
+import { EmptyState } from "@/components/shared/states";
+import { clientesStore } from "@/store/clientes-store";
 
 export const Route = createFileRoute("/clientes/$id/editar")({
-  head: () => ({ meta: [{ title: "Editar Cliente — Metas Representações" }] }),
+  head: () => ({
+    meta: [
+      { title: "Editar Cliente — Metas Representações" },
+      { name: "description", content: "Atualize as informações cadastrais do cliente." },
+      { property: "og:title", content: "Editar Cliente — Metas Representações" },
+      { property: "og:description", content: "Atualize as informações cadastrais do cliente." },
+    ],
+  }),
   component: EditarClientePage,
 });
 
 function EditarClientePage() {
   const { id } = Route.useParams();
-  const cliente = MOCK_CLIENTES.find((c) => c.id === id);
-  if (!cliente) return <NotFound />;
-  return <ClienteForm mode="editar" initial={cliente} />;
-}
-
-function NotFound() {
-  return (
-    <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-      <h2 className="text-lg font-semibold">Cliente não encontrado</h2>
-      <p className="text-sm text-muted-foreground">O cliente solicitado não existe ou foi removido.</p>
-      <Button asChild><Link to="/clientes">Voltar para a lista</Link></Button>
-    </div>
-  );
+  const cliente = clientesStore.useById(id);
+  if (!cliente) {
+    return (
+      <EmptyState
+        title="Cliente não encontrado"
+        description="O cliente solicitado não existe ou foi removido."
+        action={
+          <Button asChild>
+            <Link to="/clientes">Voltar para a lista</Link>
+          </Button>
+        }
+      />
+    );
+  }
+  return <ClienteForm key={cliente.id} mode="editar" initial={cliente} />;
 }
