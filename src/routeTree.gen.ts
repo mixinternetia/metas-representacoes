@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VendedoresRouteImport } from './routes/vendedores'
 import { Route as TransportadorasRouteImport } from './routes/transportadoras'
+import { Route as TabelasPrecosRouteImport } from './routes/tabelas-precos'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
 import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as ClientesRouteImport } from './routes/clientes'
@@ -36,6 +37,11 @@ const VendedoresRoute = VendedoresRouteImport.update({
 const TransportadorasRoute = TransportadorasRouteImport.update({
   id: '/transportadoras',
   path: '/transportadoras',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TabelasPrecosRoute = TabelasPrecosRouteImport.update({
+  id: '/tabelas-precos',
+  path: '/tabelas-precos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RepresentadasRoute = RepresentadasRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/clientes': typeof ClientesRouteWithChildren
   '/produtos': typeof ProdutosRoute
   '/representadas': typeof RepresentadasRouteWithChildren
+  '/tabelas-precos': typeof TabelasPrecosRoute
   '/transportadoras': typeof TransportadorasRouteWithChildren
   '/vendedores': typeof VendedoresRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/produtos': typeof ProdutosRoute
+  '/tabelas-precos': typeof TabelasPrecosRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/transportadoras/$id': typeof TransportadorasIdRoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRouteWithChildren
   '/produtos': typeof ProdutosRoute
   '/representadas': typeof RepresentadasRouteWithChildren
+  '/tabelas-precos': typeof TabelasPrecosRoute
   '/transportadoras': typeof TransportadorasRouteWithChildren
   '/vendedores': typeof VendedoresRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/produtos'
     | '/representadas'
+    | '/tabelas-precos'
     | '/transportadoras'
     | '/vendedores'
     | '/clientes/novo'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/produtos'
+    | '/tabelas-precos'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/transportadoras/$id'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/produtos'
     | '/representadas'
+    | '/tabelas-precos'
     | '/transportadoras'
     | '/vendedores'
     | '/clientes/novo'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   ClientesRoute: typeof ClientesRouteWithChildren
   ProdutosRoute: typeof ProdutosRoute
   RepresentadasRoute: typeof RepresentadasRouteWithChildren
+  TabelasPrecosRoute: typeof TabelasPrecosRoute
   TransportadorasRoute: typeof TransportadorasRouteWithChildren
   VendedoresRoute: typeof VendedoresRouteWithChildren
 }
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/transportadoras'
       fullPath: '/transportadoras'
       preLoaderRoute: typeof TransportadorasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tabelas-precos': {
+      id: '/tabelas-precos'
+      path: '/tabelas-precos'
+      fullPath: '/tabelas-precos'
+      preLoaderRoute: typeof TabelasPrecosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/representadas': {
@@ -444,6 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientesRoute: ClientesRouteWithChildren,
   ProdutosRoute: ProdutosRoute,
   RepresentadasRoute: RepresentadasRouteWithChildren,
+  TabelasPrecosRoute: TabelasPrecosRoute,
   TransportadorasRoute: TransportadorasRouteWithChildren,
   VendedoresRoute: VendedoresRouteWithChildren,
 }
