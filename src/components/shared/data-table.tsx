@@ -30,6 +30,7 @@ interface DataTableProps<T extends { id: string }> {
   rowActions?: (row: T) => ReactNode;
   emptyTitle?: string;
   emptyDescription?: string;
+  emptyAction?: ReactNode;
   page: number;
   perPage: number;
   total: number;
@@ -46,6 +47,7 @@ export function DataTable<T extends { id: string }>({
   rowActions,
   emptyTitle = "Nenhum registro encontrado",
   emptyDescription = "Ajuste os filtros ou tente outra busca.",
+  emptyAction,
   page,
   perPage,
   total,
@@ -97,7 +99,7 @@ export function DataTable<T extends { id: string }>({
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={colCount}>
-                  <EmptyState icon={<Search className="h-8 w-8" />} title={emptyTitle} description={emptyDescription} />
+                  <EmptyState icon={<Search className="h-8 w-8" />} title={emptyTitle} description={emptyDescription} action={emptyAction} />
                 </TableCell>
               </TableRow>
             ) : (
