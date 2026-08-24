@@ -137,20 +137,38 @@ export function AppSidebar() {
                 <CollapsibleContent>
                   <SidebarGroupContent>
                     <SidebarMenu>
-                      {group.items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            isActive={isActivePath(pathname, item.url)}
-                            tooltip={item.title}
-                          >
-                            <Link to={item.url}>
+                      {group.items.map((item) =>
+                        item.soon ? (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              tooltip={`${item.title} — Em breve`}
+                              className="cursor-default opacity-60"
+                              onClick={() =>
+                                toast.info("Esta funcionalidade será implementada em uma próxima fase.")
+                              }
+                            >
                               <item.icon className="h-4 w-4" />
-                              <span>{item.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
+                              <span className="flex-1 truncate">{item.title}</span>
+                              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                                Em breve
+                              </span>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ) : (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={isActivePath(pathname, item.url)}
+                              tooltip={item.title}
+                            >
+                              <Link to={item.url}>
+                                <item.icon className="h-4 w-4" />
+                                <span>{item.title}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ),
+                      )}
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </CollapsibleContent>
