@@ -74,7 +74,9 @@ const CIDADES: [string, string][] = [
 function tel(i: number) {
   const ddds = ["84", "81", "85", "83", "71", "82", "79", "11", "31"];
   const ddd = ddds[i % ddds.length];
-  return `(${ddd}) 9${String(9000 + i * 37).slice(0, 4)}-${String(1000 + i * 91).slice(0, 4)}`;
+  const prefixo = 8000 + ((i * 431) % 1900);
+  const sufixo = String(1000 + ((i * 1373) % 8999)).padStart(4, "0");
+  return `(${ddd}) 9${prefixo}-${sufixo}`;
 }
 
 function iso(y: number, m: number, d: number) {
