@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VendedoresRouteImport } from './routes/vendedores'
 import { Route as TransportadorasRouteImport } from './routes/transportadoras'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
 import { Route as ClientesRouteImport } from './routes/clientes'
@@ -22,6 +23,11 @@ import { Route as ClientesIdIndexRouteImport } from './routes/clientes.$id.index
 import { Route as RepresentadasIdEditarRouteImport } from './routes/representadas.$id.editar'
 import { Route as ClientesIdEditarRouteImport } from './routes/clientes.$id.editar'
 
+const VendedoresRoute = VendedoresRouteImport.update({
+  id: '/vendedores',
+  path: '/vendedores',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TransportadorasRoute = TransportadorasRouteImport.update({
   id: '/transportadoras',
   path: '/transportadoras',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/clientes': typeof ClientesRouteWithChildren
   '/representadas': typeof RepresentadasRouteWithChildren
   '/transportadoras': typeof TransportadorasRoute
+  '/vendedores': typeof VendedoresRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/transportadoras': typeof TransportadorasRoute
+  '/vendedores': typeof VendedoresRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes': typeof ClientesIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRouteWithChildren
   '/representadas': typeof RepresentadasRouteWithChildren
   '/transportadoras': typeof TransportadorasRoute
+  '/vendedores': typeof VendedoresRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/representadas'
     | '/transportadoras'
+    | '/vendedores'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes/'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/transportadoras'
+    | '/vendedores'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/representadas'
     | '/transportadoras'
+    | '/vendedores'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes/'
@@ -172,10 +184,18 @@ export interface RootRouteChildren {
   ClientesRoute: typeof ClientesRouteWithChildren
   RepresentadasRoute: typeof RepresentadasRouteWithChildren
   TransportadorasRoute: typeof TransportadorasRoute
+  VendedoresRoute: typeof VendedoresRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vendedores': {
+      id: '/vendedores'
+      path: '/vendedores'
+      fullPath: '/vendedores'
+      preLoaderRoute: typeof VendedoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transportadoras': {
       id: '/transportadoras'
       path: '/transportadoras'
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientesRoute: ClientesRouteWithChildren,
   RepresentadasRoute: RepresentadasRouteWithChildren,
   TransportadorasRoute: TransportadorasRoute,
+  VendedoresRoute: VendedoresRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
