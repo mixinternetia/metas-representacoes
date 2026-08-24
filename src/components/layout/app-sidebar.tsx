@@ -37,7 +37,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-type NavLeaf = { title: string; url: string; icon: React.ComponentType<{ className?: string }> };
+type NavLeaf = {
+  title: string;
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+  soon?: boolean;
+};
 type NavGroup = { label: string; items: NavLeaf[] };
 
 const DASHBOARD: NavLeaf = { title: "Dashboard", url: "/", icon: LayoutDashboard };
@@ -50,7 +55,7 @@ const GROUPS: NavGroup[] = [
       { title: "Representadas", url: "/representadas", icon: Building2 },
       { title: "Transportadoras", url: "/transportadoras", icon: Truck },
       { title: "Vendedores", url: "/vendedores", icon: UserCog },
-      { title: "Referências Comerciais", url: "/referencias", icon: Handshake },
+      { title: "Referências Comerciais", url: "/referencias", icon: Handshake, soon: true },
     ],
   },
   {
@@ -58,18 +63,18 @@ const GROUPS: NavGroup[] = [
     items: [
       { title: "Produtos", url: "/produtos", icon: Package },
       { title: "Tabelas de Preços", url: "/tabelas-precos", icon: Tags },
-      { title: "Orçamentos", url: "/orcamentos", icon: FileText },
-      { title: "Pedidos", url: "/pedidos", icon: ShoppingCart },
-      { title: "Notas Fiscais", url: "/notas-fiscais", icon: Receipt },
-      { title: "Duplicatas", url: "/duplicatas", icon: FileSpreadsheet },
+      { title: "Orçamentos", url: "/orcamentos", icon: FileText, soon: true },
+      { title: "Pedidos", url: "/pedidos", icon: ShoppingCart, soon: true },
+      { title: "Notas Fiscais", url: "/notas-fiscais", icon: Receipt, soon: true },
+      { title: "Duplicatas", url: "/duplicatas", icon: FileSpreadsheet, soon: true },
     ],
   },
   {
     label: "Utilitários",
     items: [
-      { title: "Usuários", url: "/usuarios", icon: UserCircle2 },
-      { title: "Perfis", url: "/perfis", icon: ShieldCheck },
-      { title: "Configurações", url: "/configuracoes", icon: Settings },
+      { title: "Usuários", url: "/usuarios", icon: UserCircle2, soon: true },
+      { title: "Perfis", url: "/perfis", icon: ShieldCheck, soon: true },
+      { title: "Configurações", url: "/configuracoes", icon: Settings, soon: true },
     ],
   },
 ];
