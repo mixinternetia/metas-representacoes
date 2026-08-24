@@ -56,7 +56,7 @@ const GROUPS: NavGroup[] = [
       { title: "Representadas", url: "/representadas", icon: Building2 },
       { title: "Transportadoras", url: "/transportadoras", icon: Truck },
       { title: "Vendedores", url: "/vendedores", icon: UserCog },
-      { title: "Referências Comerciais", url: "/referencias", icon: Handshake, soon: true },
+      { title: "Referências Comerciais", url: "/referencias-comerciais", icon: Handshake },
     ],
   },
   {
