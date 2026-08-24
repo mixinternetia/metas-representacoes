@@ -13,6 +13,7 @@ import { Route as VendedoresRouteImport } from './routes/vendedores'
 import { Route as TransportadorasRouteImport } from './routes/transportadoras'
 import { Route as TabelasPrecosRouteImport } from './routes/tabelas-precos'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
+import { Route as ReferenciasComerciaisRouteImport } from './routes/referencias-comerciais'
 import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
@@ -51,6 +52,11 @@ const TabelasPrecosRoute = TabelasPrecosRouteImport.update({
 const RepresentadasRoute = RepresentadasRouteImport.update({
   id: '/representadas',
   path: '/representadas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferenciasComerciaisRoute = ReferenciasComerciaisRouteImport.update({
+  id: '/referencias-comerciais',
+  path: '/referencias-comerciais',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProdutosRoute = ProdutosRouteImport.update({
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
   '/produtos': typeof ProdutosRouteWithChildren
+  '/referencias-comerciais': typeof ReferenciasComerciaisRoute
   '/representadas': typeof RepresentadasRouteWithChildren
   '/tabelas-precos': typeof TabelasPrecosRouteWithChildren
   '/transportadoras': typeof TransportadorasRouteWithChildren
@@ -176,6 +183,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/referencias-comerciais': typeof ReferenciasComerciaisRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/produtos/$id': typeof ProdutosIdRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
   '/produtos': typeof ProdutosRouteWithChildren
+  '/referencias-comerciais': typeof ReferenciasComerciaisRoute
   '/representadas': typeof RepresentadasRouteWithChildren
   '/tabelas-precos': typeof TabelasPrecosRouteWithChildren
   '/transportadoras': typeof TransportadorasRouteWithChildren
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clientes'
     | '/produtos'
+    | '/referencias-comerciais'
     | '/representadas'
     | '/tabelas-precos'
     | '/transportadoras'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/referencias-comerciais'
     | '/clientes/novo'
     | '/produtos/$id'
     | '/representadas/novo'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clientes'
     | '/produtos'
+    | '/referencias-comerciais'
     | '/representadas'
     | '/tabelas-precos'
     | '/transportadoras'
@@ -295,6 +307,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRouteWithChildren
   ProdutosRoute: typeof ProdutosRouteWithChildren
+  ReferenciasComerciaisRoute: typeof ReferenciasComerciaisRoute
   RepresentadasRoute: typeof RepresentadasRouteWithChildren
   TabelasPrecosRoute: typeof TabelasPrecosRouteWithChildren
   TransportadorasRoute: typeof TransportadorasRouteWithChildren
@@ -329,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/representadas'
       fullPath: '/representadas'
       preLoaderRoute: typeof RepresentadasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/referencias-comerciais': {
+      id: '/referencias-comerciais'
+      path: '/referencias-comerciais'
+      fullPath: '/referencias-comerciais'
+      preLoaderRoute: typeof ReferenciasComerciaisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/produtos': {
@@ -563,6 +583,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRouteWithChildren,
   ProdutosRoute: ProdutosRouteWithChildren,
+  ReferenciasComerciaisRoute: ReferenciasComerciaisRoute,
   RepresentadasRoute: RepresentadasRouteWithChildren,
   TabelasPrecosRoute: TabelasPrecosRouteWithChildren,
   TransportadorasRoute: TransportadorasRouteWithChildren,
