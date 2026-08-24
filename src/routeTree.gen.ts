@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VendedoresRouteImport } from './routes/vendedores'
 import { Route as TransportadorasRouteImport } from './routes/transportadoras'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
+import { Route as ProdutosRouteImport } from './routes/produtos'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VendedoresIndexRouteImport } from './routes/vendedores.index'
@@ -40,6 +41,11 @@ const TransportadorasRoute = TransportadorasRouteImport.update({
 const RepresentadasRoute = RepresentadasRouteImport.update({
   id: '/representadas',
   path: '/representadas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdutosRoute = ProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientesRoute = ClientesRouteImport.update({
@@ -116,6 +122,7 @@ const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/produtos': typeof ProdutosRoute
   '/representadas': typeof RepresentadasRouteWithChildren
   '/transportadoras': typeof TransportadorasRouteWithChildren
   '/vendedores': typeof VendedoresRouteWithChildren
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/produtos': typeof ProdutosRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/transportadoras/$id': typeof TransportadorasIdRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/produtos': typeof ProdutosRoute
   '/representadas': typeof RepresentadasRouteWithChildren
   '/transportadoras': typeof TransportadorasRouteWithChildren
   '/vendedores': typeof VendedoresRouteWithChildren
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/clientes'
+    | '/produtos'
     | '/representadas'
     | '/transportadoras'
     | '/vendedores'
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/produtos'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/transportadoras/$id'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/clientes'
+    | '/produtos'
     | '/representadas'
     | '/transportadoras'
     | '/vendedores'
@@ -226,6 +238,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRouteWithChildren
+  ProdutosRoute: typeof ProdutosRoute
   RepresentadasRoute: typeof RepresentadasRouteWithChildren
   TransportadorasRoute: typeof TransportadorasRouteWithChildren
   VendedoresRoute: typeof VendedoresRouteWithChildren
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/representadas'
       fullPath: '/representadas'
       preLoaderRoute: typeof RepresentadasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produtos': {
+      id: '/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof ProdutosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clientes': {
@@ -422,6 +442,7 @@ const VendedoresRouteWithChildren = VendedoresRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRouteWithChildren,
+  ProdutosRoute: ProdutosRoute,
   RepresentadasRoute: RepresentadasRouteWithChildren,
   TransportadorasRoute: TransportadorasRouteWithChildren,
   VendedoresRoute: VendedoresRouteWithChildren,
