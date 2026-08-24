@@ -92,7 +92,7 @@ function VendedorDetalhePage() {
           <ReadField label="RG" value={v.rg} />
           <ReadField label="E-mail" value={v.email} />
           <ReadField label="Telefone" value={<span className="font-mono">{v.telefone}</span>} />
-          <ReadField label="Celular" value={<span className="font-mono">{v.celular}</span>} />
+          <ReadField label="Data de Nascimento" value={v.dataNascimento} />
           <ReadField label="Cidade / UF" value={`${v.cidade} - ${v.uf}`} />
           <ReadField label="Clientes atendidos" value={v.clientesAtendidos} />
           <ReadField label="Cadastro" value={formatDateTime(v.criadoEm)} />
@@ -116,15 +116,17 @@ function VendedorDetalhePage() {
               <TableRow className="bg-muted/40">
                 <TableHead>Representada</TableHead>
                 <TableHead className="w-48">CNPJ</TableHead>
+                <TableHead className="w-24">Situação</TableHead>
                 <TableHead className="w-32 text-right">Comissão</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {v.comissoes.map((c) => (
-                <TableRow key={c.representadaId} className="hover:bg-muted/30">
-                  <TableCell className="font-medium">{c.representadaNome}</TableCell>
-                  <TableCell className="font-mono text-xs">{c.representadaCnpj}</TableCell>
-                  <TableCell className="text-right tabular-nums">{formatPercent(c.percentual)}</TableCell>
+                <TableRow key={c.id} className="hover:bg-muted/30">
+                  <TableCell className="font-medium">{c.representada}</TableCell>
+                  <TableCell className="font-mono text-xs">{c.cnpj}</TableCell>
+                  <TableCell><StatusBadge situacao={c.situacao} /></TableCell>
+                  <TableCell className="text-right tabular-nums">{formatPercent(c.comissao)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
