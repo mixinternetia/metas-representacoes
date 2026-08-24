@@ -69,7 +69,7 @@ const GROUPS: Group[] = [
       { title: "Representadas", url: "/representadas", icon: Building2 },
       { title: "Transportadoras", url: "/transportadoras", icon: Truck },
       { title: "Vendedores", url: "/vendedores", icon: UserCog },
-      { title: "Referências", url: "/referencias", icon: Handshake },
+      { title: "Referências", url: "/referencias-comerciais", icon: Handshake },
     ],
   },
   {
