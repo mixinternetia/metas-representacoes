@@ -28,6 +28,7 @@ import { Route as VendedoresIdRouteImport } from './routes/vendedores.$id'
 import { Route as TransportadorasIdRouteImport } from './routes/transportadoras.$id'
 import { Route as TabelasPrecosIdRouteImport } from './routes/tabelas-precos.$id'
 import { Route as RepresentadasNovoRouteImport } from './routes/representadas.novo'
+import { Route as ReferenciasComerciaisIdRouteImport } from './routes/referencias-comerciais.$id'
 import { Route as ProdutosIdRouteImport } from './routes/produtos.$id'
 import { Route as ClientesNovoRouteImport } from './routes/clientes.novo'
 import { Route as RepresentadasIdIndexRouteImport } from './routes/representadas.$id.index'
@@ -131,6 +132,11 @@ const RepresentadasNovoRoute = RepresentadasNovoRouteImport.update({
   path: '/novo',
   getParentRoute: () => RepresentadasRoute,
 } as any)
+const ReferenciasComerciaisIdRoute = ReferenciasComerciaisIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ReferenciasComerciaisRoute,
+} as any)
 const ProdutosIdRoute = ProdutosIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/vendedores': typeof VendedoresRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
   '/produtos/$id': typeof ProdutosIdRoute
+  '/referencias-comerciais/$id': typeof ReferenciasComerciaisIdRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/tabelas-precos/$id': typeof TabelasPrecosIdRoute
   '/transportadoras/$id': typeof TransportadorasIdRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/produtos/$id': typeof ProdutosIdRoute
+  '/referencias-comerciais/$id': typeof ReferenciasComerciaisIdRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/tabelas-precos/$id': typeof TabelasPrecosIdRoute
   '/transportadoras/$id': typeof TransportadorasIdRoute
@@ -221,6 +229,7 @@ export interface FileRoutesById {
   '/vendedores': typeof VendedoresRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
   '/produtos/$id': typeof ProdutosIdRoute
+  '/referencias-comerciais/$id': typeof ReferenciasComerciaisIdRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/tabelas-precos/$id': typeof TabelasPrecosIdRoute
   '/transportadoras/$id': typeof TransportadorasIdRoute
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | '/vendedores'
     | '/clientes/novo'
     | '/produtos/$id'
+    | '/referencias-comerciais/$id'
     | '/representadas/novo'
     | '/tabelas-precos/$id'
     | '/transportadoras/$id'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clientes/novo'
     | '/produtos/$id'
+    | '/referencias-comerciais/$id'
     | '/representadas/novo'
     | '/tabelas-precos/$id'
     | '/transportadoras/$id'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/vendedores'
     | '/clientes/novo'
     | '/produtos/$id'
+    | '/referencias-comerciais/$id'
     | '/representadas/novo'
     | '/tabelas-precos/$id'
     | '/transportadoras/$id'
@@ -460,6 +472,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RepresentadasNovoRouteImport
       parentRoute: typeof RepresentadasRoute
     }
+    '/referencias-comerciais/$id': {
+      id: '/referencias-comerciais/$id'
+      path: '/$id'
+      fullPath: '/referencias-comerciais/$id'
+      preLoaderRoute: typeof ReferenciasComerciaisIdRouteImport
+      parentRoute: typeof ReferenciasComerciaisRoute
+    }
     '/produtos/$id': {
       id: '/produtos/$id'
       path: '/$id'
@@ -538,10 +557,12 @@ const ProdutosRouteWithChildren = ProdutosRoute._addFileChildren(
 )
 
 interface ReferenciasComerciaisRouteChildren {
+  ReferenciasComerciaisIdRoute: typeof ReferenciasComerciaisIdRoute
   ReferenciasComerciaisIndexRoute: typeof ReferenciasComerciaisIndexRoute
 }
 
 const ReferenciasComerciaisRouteChildren: ReferenciasComerciaisRouteChildren = {
+  ReferenciasComerciaisIdRoute: ReferenciasComerciaisIdRoute,
   ReferenciasComerciaisIndexRoute: ReferenciasComerciaisIndexRoute,
 }
 
