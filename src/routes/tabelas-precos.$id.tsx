@@ -125,7 +125,9 @@ function TabelaPrecoDetalhePage() {
           <ReadField label="Data de criação" value={formatDate(t.criadoEm)} />
           <ReadField label="Última atualização" value={formatDate(t.atualizadoEm)} />
           <ReadField label="Produtos com preço" value={t.itens.length} />
-          <ReadField label="Descrição" value={t.descricao} className="sm:col-span-2 lg:col-span-4" />
+          <div className="sm:col-span-2 lg:col-span-4">
+            <ReadField label="Descrição" value={t.descricao} />
+          </div>
         </div>
       </FormSection>
 
