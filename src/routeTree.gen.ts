@@ -9,13 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RepresentadasRouteImport } from './routes/representadas'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
+import { Route as RepresentadasNovoRouteImport } from './routes/representadas.novo'
 import { Route as ClientesNovoRouteImport } from './routes/clientes.novo'
 import { Route as ClientesIdIndexRouteImport } from './routes/clientes.$id.index'
+import { Route as RepresentadasIdEditarRouteImport } from './routes/representadas.$id.editar'
 import { Route as ClientesIdEditarRouteImport } from './routes/clientes.$id.editar'
 
+const RepresentadasRoute = RepresentadasRouteImport.update({
+  id: '/representadas',
+  path: '/representadas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClientesRoute = ClientesRouteImport.update({
   id: '/clientes',
   path: '/clientes',
@@ -31,6 +39,11 @@ const ClientesIndexRoute = ClientesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ClientesRoute,
 } as any)
+const RepresentadasNovoRoute = RepresentadasNovoRouteImport.update({
+  id: '/novo',
+  path: '/novo',
+  getParentRoute: () => RepresentadasRoute,
+} as any)
 const ClientesNovoRoute = ClientesNovoRouteImport.update({
   id: '/novo',
   path: '/novo',
@@ -41,6 +54,11 @@ const ClientesIdIndexRoute = ClientesIdIndexRouteImport.update({
   path: '/$id/',
   getParentRoute: () => ClientesRoute,
 } as any)
+const RepresentadasIdEditarRoute = RepresentadasIdEditarRouteImport.update({
+  id: '/$id/editar',
+  path: '/$id/editar',
+  getParentRoute: () => RepresentadasRoute,
+} as any)
 const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
   id: '/$id/editar',
   path: '/$id/editar',
@@ -50,25 +68,34 @@ const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/representadas': typeof RepresentadasRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
+  '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
+  '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id/': typeof ClientesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/representadas': typeof RepresentadasRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
+  '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
+  '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id': typeof ClientesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/representadas': typeof RepresentadasRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
+  '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
+  '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id/': typeof ClientesIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -76,34 +103,51 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/clientes'
+    | '/representadas'
     | '/clientes/novo'
+    | '/representadas/novo'
     | '/clientes/'
     | '/clientes/$id/editar'
+    | '/representadas/$id/editar'
     | '/clientes/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/representadas'
     | '/clientes/novo'
+    | '/representadas/novo'
     | '/clientes'
     | '/clientes/$id/editar'
+    | '/representadas/$id/editar'
     | '/clientes/$id'
   id:
     | '__root__'
     | '/'
     | '/clientes'
+    | '/representadas'
     | '/clientes/novo'
+    | '/representadas/novo'
     | '/clientes/'
     | '/clientes/$id/editar'
+    | '/representadas/$id/editar'
     | '/clientes/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRouteWithChildren
+  RepresentadasRoute: typeof RepresentadasRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/representadas': {
+      id: '/representadas'
+      path: '/representadas'
+      fullPath: '/representadas'
+      preLoaderRoute: typeof RepresentadasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/clientes': {
       id: '/clientes'
       path: '/clientes'
@@ -125,6 +169,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesIndexRouteImport
       parentRoute: typeof ClientesRoute
     }
+    '/representadas/novo': {
+      id: '/representadas/novo'
+      path: '/novo'
+      fullPath: '/representadas/novo'
+      preLoaderRoute: typeof RepresentadasNovoRouteImport
+      parentRoute: typeof RepresentadasRoute
+    }
     '/clientes/novo': {
       id: '/clientes/novo'
       path: '/novo'
@@ -138,6 +189,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/clientes/$id/'
       preLoaderRoute: typeof ClientesIdIndexRouteImport
       parentRoute: typeof ClientesRoute
+    }
+    '/representadas/$id/editar': {
+      id: '/representadas/$id/editar'
+      path: '/$id/editar'
+      fullPath: '/representadas/$id/editar'
+      preLoaderRoute: typeof RepresentadasIdEditarRouteImport
+      parentRoute: typeof RepresentadasRoute
     }
     '/clientes/$id/editar': {
       id: '/clientes/$id/editar'
@@ -167,9 +225,24 @@ const ClientesRouteWithChildren = ClientesRoute._addFileChildren(
   ClientesRouteChildren,
 )
 
+interface RepresentadasRouteChildren {
+  RepresentadasNovoRoute: typeof RepresentadasNovoRoute
+  RepresentadasIdEditarRoute: typeof RepresentadasIdEditarRoute
+}
+
+const RepresentadasRouteChildren: RepresentadasRouteChildren = {
+  RepresentadasNovoRoute: RepresentadasNovoRoute,
+  RepresentadasIdEditarRoute: RepresentadasIdEditarRoute,
+}
+
+const RepresentadasRouteWithChildren = RepresentadasRoute._addFileChildren(
+  RepresentadasRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRouteWithChildren,
+  RepresentadasRoute: RepresentadasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
