@@ -1,4 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { toast } from "sonner";
 import {
   LayoutDashboard,
   Users,
@@ -37,7 +38,12 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-type NavLeaf = { title: string; url: string; icon: React.ComponentType<{ className?: string }> };
+type NavLeaf = {
+  title: string;
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+  soon?: boolean;
+};
 type NavGroup = { label: string; items: NavLeaf[] };
 
 const DASHBOARD: NavLeaf = { title: "Dashboard", url: "/", icon: LayoutDashboard };
@@ -50,7 +56,7 @@ const GROUPS: NavGroup[] = [
       { title: "Representadas", url: "/representadas", icon: Building2 },
       { title: "Transportadoras", url: "/transportadoras", icon: Truck },
       { title: "Vendedores", url: "/vendedores", icon: UserCog },
-      { title: "Referências Comerciais", url: "/referencias", icon: Handshake },
+      { title: "Referências Comerciais", url: "/referencias", icon: Handshake, soon: true },
     ],
   },
   {
@@ -58,18 +64,18 @@ const GROUPS: NavGroup[] = [
     items: [
       { title: "Produtos", url: "/produtos", icon: Package },
       { title: "Tabelas de Preços", url: "/tabelas-precos", icon: Tags },
-      { title: "Orçamentos", url: "/orcamentos", icon: FileText },
-      { title: "Pedidos", url: "/pedidos", icon: ShoppingCart },
-      { title: "Notas Fiscais", url: "/notas-fiscais", icon: Receipt },
-      { title: "Duplicatas", url: "/duplicatas", icon: FileSpreadsheet },
+      { title: "Orçamentos", url: "/orcamentos", icon: FileText, soon: true },
+      { title: "Pedidos", url: "/pedidos", icon: ShoppingCart, soon: true },
+      { title: "Notas Fiscais", url: "/notas-fiscais", icon: Receipt, soon: true },
+      { title: "Duplicatas", url: "/duplicatas", icon: FileSpreadsheet, soon: true },
     ],
   },
   {
     label: "Utilitários",
     items: [
-      { title: "Usuários", url: "/usuarios", icon: UserCircle2 },
-      { title: "Perfis", url: "/perfis", icon: ShieldCheck },
-      { title: "Configurações", url: "/configuracoes", icon: Settings },
+      { title: "Usuários", url: "/usuarios", icon: UserCircle2, soon: true },
+      { title: "Perfis", url: "/perfis", icon: ShieldCheck, soon: true },
+      { title: "Configurações", url: "/configuracoes", icon: Settings, soon: true },
     ],
   },
 ];
@@ -132,20 +138,38 @@ export function AppSidebar() {
                 <CollapsibleContent>
                   <SidebarGroupContent>
                     <SidebarMenu>
-                      {group.items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            isActive={isActivePath(pathname, item.url)}
-                            tooltip={item.title}
-                          >
-                            <Link to={item.url}>
+                      {group.items.map((item) =>
+                        item.soon ? (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              tooltip={`${item.title} — Em breve`}
+                              className="cursor-default opacity-60"
+                              onClick={() =>
+                                toast.info("Esta funcionalidade será implementada em uma próxima fase.")
+                              }
+                            >
                               <item.icon className="h-4 w-4" />
-                              <span>{item.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
+                              <span className="flex-1 truncate">{item.title}</span>
+                              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                                Em breve
+                              </span>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ) : (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={isActivePath(pathname, item.url)}
+                              tooltip={item.title}
+                            >
+                              <Link to={item.url}>
+                                <item.icon className="h-4 w-4" />
+                                <span>{item.title}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ),
+                      )}
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </CollapsibleContent>
