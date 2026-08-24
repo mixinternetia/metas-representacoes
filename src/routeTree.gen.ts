@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RepresentadasIndexRouteImport } from './routes/representadas.index'
 import { Route as ClientesIndexRouteImport } from './routes/clientes.index'
 import { Route as RepresentadasNovoRouteImport } from './routes/representadas.novo'
 import { Route as ClientesNovoRouteImport } from './routes/clientes.novo'
+import { Route as RepresentadasIdIndexRouteImport } from './routes/representadas.$id.index'
 import { Route as ClientesIdIndexRouteImport } from './routes/clientes.$id.index'
 import { Route as RepresentadasIdEditarRouteImport } from './routes/representadas.$id.editar'
 import { Route as ClientesIdEditarRouteImport } from './routes/clientes.$id.editar'
@@ -34,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RepresentadasIndexRoute = RepresentadasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RepresentadasRoute,
+} as any)
 const ClientesIndexRoute = ClientesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -48,6 +55,11 @@ const ClientesNovoRoute = ClientesNovoRouteImport.update({
   id: '/novo',
   path: '/novo',
   getParentRoute: () => ClientesRoute,
+} as any)
+const RepresentadasIdIndexRoute = RepresentadasIdIndexRouteImport.update({
+  id: '/$id/',
+  path: '/$id/',
+  getParentRoute: () => RepresentadasRoute,
 } as any)
 const ClientesIdIndexRoute = ClientesIdIndexRouteImport.update({
   id: '/$id/',
@@ -72,19 +84,22 @@ export interface FileRoutesByFullPath {
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
+  '/representadas/': typeof RepresentadasIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
   '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id/': typeof ClientesIdIndexRoute
+  '/representadas/$id/': typeof RepresentadasIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/representadas': typeof RepresentadasRouteWithChildren
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes': typeof ClientesIndexRoute
+  '/representadas': typeof RepresentadasIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
   '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id': typeof ClientesIdIndexRoute
+  '/representadas/$id': typeof RepresentadasIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,9 +109,11 @@ export interface FileRoutesById {
   '/clientes/novo': typeof ClientesNovoRoute
   '/representadas/novo': typeof RepresentadasNovoRoute
   '/clientes/': typeof ClientesIndexRoute
+  '/representadas/': typeof RepresentadasIndexRoute
   '/clientes/$id/editar': typeof ClientesIdEditarRoute
   '/representadas/$id/editar': typeof RepresentadasIdEditarRoute
   '/clientes/$id/': typeof ClientesIdIndexRoute
+  '/representadas/$id/': typeof RepresentadasIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,19 +124,22 @@ export interface FileRouteTypes {
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes/'
+    | '/representadas/'
     | '/clientes/$id/editar'
     | '/representadas/$id/editar'
     | '/clientes/$id/'
+    | '/representadas/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/representadas'
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes'
+    | '/representadas'
     | '/clientes/$id/editar'
     | '/representadas/$id/editar'
     | '/clientes/$id'
+    | '/representadas/$id'
   id:
     | '__root__'
     | '/'
@@ -128,9 +148,11 @@ export interface FileRouteTypes {
     | '/clientes/novo'
     | '/representadas/novo'
     | '/clientes/'
+    | '/representadas/'
     | '/clientes/$id/editar'
     | '/representadas/$id/editar'
     | '/clientes/$id/'
+    | '/representadas/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -162,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/representadas/': {
+      id: '/representadas/'
+      path: '/'
+      fullPath: '/representadas/'
+      preLoaderRoute: typeof RepresentadasIndexRouteImport
+      parentRoute: typeof RepresentadasRoute
+    }
     '/clientes/': {
       id: '/clientes/'
       path: '/'
@@ -182,6 +211,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/clientes/novo'
       preLoaderRoute: typeof ClientesNovoRouteImport
       parentRoute: typeof ClientesRoute
+    }
+    '/representadas/$id/': {
+      id: '/representadas/$id/'
+      path: '/$id'
+      fullPath: '/representadas/$id/'
+      preLoaderRoute: typeof RepresentadasIdIndexRouteImport
+      parentRoute: typeof RepresentadasRoute
     }
     '/clientes/$id/': {
       id: '/clientes/$id/'
@@ -227,12 +263,16 @@ const ClientesRouteWithChildren = ClientesRoute._addFileChildren(
 
 interface RepresentadasRouteChildren {
   RepresentadasNovoRoute: typeof RepresentadasNovoRoute
+  RepresentadasIndexRoute: typeof RepresentadasIndexRoute
   RepresentadasIdEditarRoute: typeof RepresentadasIdEditarRoute
+  RepresentadasIdIndexRoute: typeof RepresentadasIdIndexRoute
 }
 
 const RepresentadasRouteChildren: RepresentadasRouteChildren = {
   RepresentadasNovoRoute: RepresentadasNovoRoute,
+  RepresentadasIndexRoute: RepresentadasIndexRoute,
   RepresentadasIdEditarRoute: RepresentadasIdEditarRoute,
+  RepresentadasIdIndexRoute: RepresentadasIdIndexRoute,
 }
 
 const RepresentadasRouteWithChildren = RepresentadasRoute._addFileChildren(
