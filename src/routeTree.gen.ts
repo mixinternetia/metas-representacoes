@@ -15,6 +15,7 @@ import { Route as TabelasPrecosRouteImport } from './routes/tabelas-precos'
 import { Route as RepresentadasRouteImport } from './routes/representadas'
 import { Route as ReferenciasComerciaisRouteImport } from './routes/referencias-comerciais'
 import { Route as ProdutosRouteImport } from './routes/produtos'
+import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VendedoresIndexRouteImport } from './routes/vendedores.index'
@@ -64,6 +65,11 @@ const ReferenciasComerciaisRoute = ReferenciasComerciaisRouteImport.update({
 const ProdutosRoute = ProdutosRouteImport.update({
   id: '/produtos',
   path: '/produtos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemRoute = DesignSystemRouteImport.update({
+  id: '/design-system',
+  path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientesRoute = ClientesRouteImport.update({
@@ -171,6 +177,7 @@ const ClientesIdEditarRoute = ClientesIdEditarRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/design-system': typeof DesignSystemRoute
   '/produtos': typeof ProdutosRouteWithChildren
   '/referencias-comerciais': typeof ReferenciasComerciaisRouteWithChildren
   '/representadas': typeof RepresentadasRouteWithChildren
@@ -198,6 +205,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRoute
   '/clientes/novo': typeof ClientesNovoRoute
   '/produtos/$id': typeof ProdutosIdRoute
   '/referencias-comerciais/$id': typeof ReferenciasComerciaisIdRoute
@@ -221,6 +229,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRouteWithChildren
+  '/design-system': typeof DesignSystemRoute
   '/produtos': typeof ProdutosRouteWithChildren
   '/referencias-comerciais': typeof ReferenciasComerciaisRouteWithChildren
   '/representadas': typeof RepresentadasRouteWithChildren
@@ -251,6 +260,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/clientes'
+    | '/design-system'
     | '/produtos'
     | '/referencias-comerciais'
     | '/representadas'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/design-system'
     | '/clientes/novo'
     | '/produtos/$id'
     | '/referencias-comerciais/$id'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/clientes'
+    | '/design-system'
     | '/produtos'
     | '/referencias-comerciais'
     | '/representadas'
@@ -329,6 +341,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRouteWithChildren
+  DesignSystemRoute: typeof DesignSystemRoute
   ProdutosRoute: typeof ProdutosRouteWithChildren
   ReferenciasComerciaisRoute: typeof ReferenciasComerciaisRouteWithChildren
   RepresentadasRoute: typeof RepresentadasRouteWithChildren
@@ -379,6 +392,13 @@ declare module '@tanstack/react-router' {
       path: '/produtos'
       fullPath: '/produtos'
       preLoaderRoute: typeof ProdutosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system': {
+      id: '/design-system'
+      path: '/design-system'
+      fullPath: '/design-system'
+      preLoaderRoute: typeof DesignSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clientes': {
@@ -634,6 +654,7 @@ const VendedoresRouteWithChildren = VendedoresRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRouteWithChildren,
+  DesignSystemRoute: DesignSystemRoute,
   ProdutosRoute: ProdutosRouteWithChildren,
   ReferenciasComerciaisRoute: ReferenciasComerciaisRouteWithChildren,
   RepresentadasRoute: RepresentadasRouteWithChildren,
