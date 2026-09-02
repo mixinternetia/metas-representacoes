@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Settings,
   UserCircle2,
+  BookOpen,
   ChevronDown,
   Sparkles,
 } from "lucide-react";
@@ -76,6 +77,7 @@ const GROUPS: NavGroup[] = [
       { title: "Usuários", url: "/usuarios", icon: UserCircle2, soon: true },
       { title: "Perfis", url: "/perfis", icon: ShieldCheck, soon: true },
       { title: "Configurações", url: "/configuracoes", icon: Settings, soon: true },
+      { title: "Design System", url: "/design-system", icon: BookOpen },
     ],
   },
 ];
