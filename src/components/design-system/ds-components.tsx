@@ -81,6 +81,7 @@ import { DataTable, type Column } from "@/components/shared/data-table";
 import { SummaryCard, SummaryCards } from "@/components/shared/summary-card";
 import { EmptyState, LoadingState, SkeletonRows } from "@/components/shared/states";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { PageHeader } from "@/components/layout/page-header";
 import { DsBlock, DsGrid, DsSection, DsSpecs } from "./ds-primitives";
 
 /* ---------------------------- Botões ---------------------------- */
