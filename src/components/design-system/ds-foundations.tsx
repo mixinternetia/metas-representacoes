@@ -50,25 +50,32 @@ function useResolvedColors() {
     const probe = document.createElement("div");
     probe.style.display = "none";
     document.body.appendChild(probe);
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const out: Record<string, { hex: string; rgb: string }> = {};
+
     for (const t of TOKENS) {
       probe.style.color = `var(${t.token})`;
       const computed = getComputedStyle(probe).color;
-      const m = computed.match(/[\d.]+/g);
       let hex = "—";
       let rgb = computed;
-      if (m && m.length >= 3) {
-        const [r, g, b] = m.map((n) => Math.round(Number(n)));
+
+      if (ctx) {
+        ctx.clearRect(0, 0, 1, 1);
+        ctx.fillStyle = "#000000";
+        ctx.fillStyle = computed;
+        ctx.fillRect(0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
         hex =
           "#" +
-          [r, g, b]
-            .map((n) => Math.max(0, Math.min(255, n)).toString(16).padStart(2, "0"))
-            .join("")
-            .toUpperCase();
+          [r, g, b].map((n) => n.toString(16).padStart(2, "0")).join("").toUpperCase();
         rgb = `rgb(${r}, ${g}, ${b})`;
       }
       out[t.token] = { hex, rgb };
     }
+
     probe.remove();
     setColors(out);
   }, []);
